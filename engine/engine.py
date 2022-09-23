@@ -34,9 +34,7 @@ class Engine(object):
 
         # do stuff if not headless
         if not self._headless:
-            self._render_thread = Thread(
-                name="render", target=self._render, args=()
-            )
+            self._render_thread = Thread(name="render", target=self._render, args=())
             self._render_thread.start()
 
     # setup the logger
