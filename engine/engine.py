@@ -12,6 +12,7 @@ from configuration import Config
 
 
 class Engine(object):
+
     def __init__(self, config_file, headless=False, log_file: Optional[str] = None):
         super().__init__()
         # config instance to edit from imgui (if available)
