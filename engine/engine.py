@@ -13,6 +13,10 @@ from configuration import Config
 
 class Engine(object):
     def __init__(self, config_file, headless=False, log_file: Optional[str] = None):
+        """
+        Highest level object for the SpaceGrantEngine library. Controls all submodules
+        and provides interfaces. Handles concurrency and automatic parallelism.
+        """
         super().__init__()
         # config instance to edit from imgui (if available)
         self._config: Config = Config(config_file=config_file)
@@ -32,7 +36,8 @@ class Engine(object):
         if not self._headless:
             self._render_thread = Thread(
                 name="render", target=self._render, args=()
-            ).start()
+            )
+            self._render_thread.start()
 
     # setup the logger
     def _setup_logger(self, log_file_name: str) -> None:
@@ -130,6 +135,11 @@ class Engine(object):
 
                 if clicked_quit:
                     sys.exit(0)
+
+                imgui.end_menu()
+
+            if imgui.begin_menu("Config", True):
+                # do something here
 
                 imgui.end_menu()
             imgui.end_main_menu_bar()
