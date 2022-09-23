@@ -1,4 +1,4 @@
 imgui
 glfw
 PyOpenGL
-PyOpenGL_accelerate
+PyOpenGL_accelerate[accelerate]
