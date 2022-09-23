@@ -3,7 +3,7 @@ name: PEP-8 Check
 on: [pull_request]
 jobs:
   test_formatting:
-    name: "Test Python Formatting"
+    name: "Formatting/Linting/Static-Checking"
 
     runs-on: ubuntu-latest
 
