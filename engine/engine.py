@@ -30,13 +30,15 @@ class Engine(object):
 
         # do stuff if not headless
         if not self._headless:
-            self._render_thread = Thread(name="render", target=self._render, args=()).start()
+            self._render_thread = Thread(
+                name="render", target=self._render, args=()
+            ).start()
 
     # setup the logger
     def _setup_logger(self, log_file_name: str) -> None:
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+        formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
         # create stdout handler
         stdout_handler = logging.StreamHandler(sys.stdout)
         stdout_handler.setLevel(logging.DEBUG)
@@ -98,7 +100,11 @@ class Engine(object):
         self._impl = GlfwRenderer(self._window)
 
         io = imgui.get_io()
-        self._font = io.fonts.add_font_from_file_ttf(self._font_path, 30) if self._font_path is not None else None
+        self._font = (
+            io.fonts.add_font_from_file_ttf(self._font_path, 30)
+            if self._font_path is not None
+            else None
+        )
         self._impl.refresh_font_texture()
 
         while not glfw.window_should_close(self._window):
@@ -118,7 +124,9 @@ class Engine(object):
     def _generate_menu_bar(self):
         if imgui.begin_main_menu_bar():
             if imgui.begin_menu("File", True):
-                clicked_quit, selected_quit = imgui.menu_item("Quit", "Ctrl+Q", False, True)
+                clicked_quit, selected_quit = imgui.menu_item(
+                    "Quit", "Ctrl+Q", False, True
+                )
 
                 if clicked_quit:
                     sys.exit(0)
