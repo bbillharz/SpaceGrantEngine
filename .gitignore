@@ -1,6 +1,9 @@
 # ROS-stuff
 log/
 
+build/
+install/
+
 # specific files
 imgui.ini
 space.log
