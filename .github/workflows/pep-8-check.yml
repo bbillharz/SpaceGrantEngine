@@ -47,7 +47,7 @@ jobs:
 
     - name: Lint with mypy
       run: |
-        pip install mypy 
+        pip install mypy
         mypy ./sgengine --no-implicit-optional --show-column-numbers --show-error-codes --disable-error-code import
 
     - name: Lint with pylint
