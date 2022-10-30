@@ -1,8 +1,6 @@
 {
     "context": "../",
     "dockerFile": "Dockerfile",
-    // This will launch the container as a non-root user
-    "remoteUser" : "ros",
     "extensions": [
         "ms-azuretools.vscode-docker",
         "ms-python.python",
@@ -12,5 +10,11 @@
         "ms-iot.vscode-ros",
         "smilerobotics.urdf",
         "yzhang.markdown-all-in-one"
-    ]
+    ],
+
+    // Install python packages from requirements.txt
+    "postCreateCommand": "pip3 install -r requirements.txt",
+
+    // This will launch the container as a non-root user
+    "remoteUser" : "ros"
 }
