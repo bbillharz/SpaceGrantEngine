@@ -7,6 +7,8 @@ RUN apt-get update
 RUN apt-get install python3-pip -y
 RUN pip3 install glfw imgui PyOpenGL
 
+RUN pip3 install black
+
 # Add ros user (with sudo)
 RUN adduser --disabled-password --gecos '' ros
 RUN adduser ros sudo
