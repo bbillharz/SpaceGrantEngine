@@ -24,7 +24,7 @@ jobs:
       run: |
         pip install black
         
-        black --check ./engine
+        black --check ./sgengine
     - name: Lint with flake8
       run: |
         pip install flake8
@@ -41,14 +41,14 @@ jobs:
         # Too many blank lines
         # Whitespace before :, Line break occurred before a binary operator (Black breaks this)
 
-        flake8 ./engine --count --select=E9,F63,F7,F82,F401,W292,E275 --extend-ignore=W293,W291,E303,E203,W503 --show-source --statistics
+        flake8 ./sgengine --count --select=E9,F63,F7,F82,F401,W292,E275 --extend-ignore=W293,W291,E303,E203,W503 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 ./engine --count --exit-zero --max-complexity=10 --max-line-length=140 --statistics
+        flake8 ./sgengine --count --exit-zero --max-complexity=10 --max-line-length=140 --statistics
 
     - name: Lint with mypy
       run: |
         pip install mypy 
-        mypy ./engine --no-implicit-optional --show-column-numbers --show-error-codes --disable-error-code import
+        mypy ./sgengine --no-implicit-optional --show-column-numbers --show-error-codes --disable-error-code import
 
     - name: Lint with pylint
       run: |
@@ -68,4 +68,4 @@ jobs:
         # Logging fstring interpolation
         # Useless parent or super() delegation 
 
-        pylint ./engine --disable=C0303,C0114,W0401,R0902,R0904,C0305,W0703,C0200,R0913,R0914,W0107,W1203,W0246
+        pylint ./sgengine --disable=C0303,C0114,W0401,R0902,R0904,C0305,W0703,C0200,R0913,R0914,W0107,W1203,W0246
