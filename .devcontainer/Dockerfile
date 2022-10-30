@@ -15,3 +15,9 @@ RUN adduser ros sudo
 # asked for a password when using 
 # sudo command by ammending sudoers file
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# Switch to user ros
+USER ros
+
+# source ros2
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
