@@ -44,4 +44,3 @@ class Config:
         if imgui.begin_menu("Config", True):
 
             imgui.end_menu()
-            

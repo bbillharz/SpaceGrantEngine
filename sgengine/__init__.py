@@ -1,5 +1,3 @@
 from .engine import Engine
 
-__all__ = [
-    Engine
-]
+__all__ = [Engine]

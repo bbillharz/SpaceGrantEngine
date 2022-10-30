@@ -18,4 +18,3 @@ class INIReader:
         Get the dictionary defined by the .ini configuration file
         """
         return self._data
-        
