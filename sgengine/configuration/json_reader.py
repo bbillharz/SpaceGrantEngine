@@ -40,4 +40,3 @@ class JSONReader:
         Get the dictionary defined by the .json configuration file
         """
         return self._data
-        
