@@ -13,13 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='jcdavis',
-    maintainer_email='jcdavis@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    maintainer='Colorado School of Mines - Robotics Club',
+    maintainer_email='jcdavis@mines.edu',
+    description='SpaceGrantEngine - ROS2 Utilities Package',
+    license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+                'talker = py_pubsub.publisher_member_function:main',
         ],
     },
 )
