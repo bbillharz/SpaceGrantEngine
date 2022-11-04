@@ -7,9 +7,7 @@ from .abstract_node import AbstractNode
 
 
 class Engine:
-    """
-    Highest level abstraction of the SpaceGrantEngine ROS2 package
-    """
+    """Highest level abstraction of the SpaceGrantEngine ROS2 package."""
 
     def __init__(self) -> None:
         self._nodes: List[AbstractNode] = []
@@ -22,9 +20,7 @@ class Engine:
 
     @property
     def heartbeat(self) -> Tuple[Node, Subscription]:
-        """
-        Get the node and subscriber for the heartbeat topic
-        """
+        """Get the node and subscriber for the heartbeat topic."""
         return self._heartbeat_node, self._heartbeat_sub
 
     def _heartback_callback(self, msg: String):
@@ -33,9 +29,7 @@ class Engine:
         self._logger.info(out_str)
 
     def launch_node(self, node_type: Type[AbstractNode], *args, **kwargs) -> None:
-        """
-        Given an AbstractNode, constructs it and launchs the node
-        """
+        """Given an AbstractNode, constructs it and launchs the node."""
         node = node_type(*args, **kwargs)
         self._nodes.append(node)
         node.launch()

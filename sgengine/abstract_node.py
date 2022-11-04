@@ -9,9 +9,7 @@ from std_msgs.msg import String
 
 
 class AbstractNode(ABC, Node):
-    """
-    Abstract class for nodes of the sub modules to implement
-    """
+    """Abstract class for nodes of the sub modules to implement."""
 
     def __init__(self, name: str, *args, **kwargs) -> None:
         self._name: str = name
@@ -30,7 +28,8 @@ class AbstractNode(ABC, Node):
 
     def init(self) -> None:
         """
-        Setups the data structures for using publishers and subscribers through the abstract node interface
+        Setups the data structures for using publishers and subscribers through the abstract node interface.
+
         If this is not called, this node acts as a normal ROS2 node
         """
         # setup local tracking
@@ -52,16 +51,16 @@ class AbstractNode(ABC, Node):
 
     def launch(self) -> None:
         """
-        Should only be called on a given node after the instance has been created, BUT
-        before the .init() call is made.
+        Launch the node.
+
+        Should only be called on a given node after the instance has been created,
+        BUT before the .init() call is made.
         """
         pass  # TODO, idk if return LaunchDescription or if we want to just use subprocess
 
     @cached_property
     def logger(self) -> Any:
-        """
-        Returns the ROS logger instances
-        """
+        """Return the ROS logger instances."""
         return self.get_logger()
 
     def _create_publisher(self, topic: str, data: Any, queue_size=10) -> None:
@@ -69,9 +68,7 @@ class AbstractNode(ABC, Node):
         self._publishers[topic] = self.create_publisher(type(data), topic, queue_size)
 
     def publish(self, topic: str, data: Any) -> None:
-        """
-        Publishes a given data packet to a given topic
-        """
+        """Publish a given data packet to a given topic."""
         assert self._initialized
         if self._publishers[topic] is None:
             self._create_publisher(topic, data)
@@ -88,16 +85,12 @@ class AbstractNode(ABC, Node):
     def subscribe(
         self, topic: str, callback: Callable, msg_datatype: Any = String, queue_size=10
     ) -> None:
-        """
-        Adds a callback function as a subscriber to a given topic
-        """
+        """Add a callback function as a subscriber to a given topic."""
         assert self._initialized
         self._create_subscriber(topic, msg_datatype, callback, queue_size)
 
     def main(self) -> None:
-        """
-        Main function (or entry point) into the given Node
-        """
+        """Run the main function (or entry point) into the given Node."""
         rclpy.init(args=None)
         self.init()
 
@@ -110,7 +103,5 @@ class AbstractNode(ABC, Node):
 
     @abstractmethod
     def _main(self) -> None:
-        """
-        Implement any publish/subscribe behavior in this method
-        """
+        """Implement any publish/subscribe behavior in this method."""
         pass
