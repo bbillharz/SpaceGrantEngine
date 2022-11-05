@@ -1,0 +1,5 @@
+motor_pins:
+  left: 0
+  right: 1
+  back: 2
+  front: 3
