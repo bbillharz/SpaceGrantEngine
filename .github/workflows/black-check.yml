@@ -28,4 +28,4 @@ jobs:
 
     - name: Check Black Formatting
       run: |
-        python3 -m black --check ./pteranodon
+        python3 -m black --check ./sgengine
