@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from functools import cached_property
-from typing import List, Any, Callable, Dict
+from typing import List, Any, Callable, Dict, Optional
 
 import rclpy
 from rclpy.node import Node, Publisher, Subscription
@@ -19,12 +19,12 @@ class AbstractNode(ABC, Node):
         super().__init__(self._name, *self._args, **self._kwargs)
 
         # dummy allocations
-        self._publishers = None
-        self._subscribers = None
-        self._heartbeat_publisher = None
-        self._heartbeat_timer = None
-        self._heartbeat_counter = None
-        self._initialized = False
+        self._publishers: Optional[Dict[str, Publisher]] = None
+        self._subscribers: Optional[Dict[str, List[Subscription]]] = None
+        self._heartbeat_publisher: Optional[Publisher] = None
+        self._heartbeat_timer: Optional[Any] = None
+        self._heartbeat_counter: int = None
+        self._initialized: bool = False
 
     def init(self) -> None:
         """
@@ -40,8 +40,6 @@ class AbstractNode(ABC, Node):
         self._heartbeat_publisher = self.create_publisher(String, "heartbeat", 10)
         self._heartbeat_timer = self.create_timer(1.0, self._heartbeat_callback)
         self._heartbeat_counter: int = 0
-
-        # helper variable
 
     def _heartbeat_callback(self):
         msg = String()
