@@ -1,7 +1,6 @@
 name: PyLint
 
 on: [push,pull_request]
-
 jobs:
   pylint_check:
     name: "PyLint check"
