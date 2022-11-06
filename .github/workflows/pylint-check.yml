@@ -6,7 +6,8 @@ jobs:
   pylint_check:
     name: "PyLint check"
 
-    runs:
+    runs-on: ubuntu-latest
+    container:
       using: 'docker'
       image: '.devcontainer/Dockerfile'
 
