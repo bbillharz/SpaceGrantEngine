@@ -6,10 +6,11 @@ class PathfindingNode(AbstractNode):
 
     def __init__(self, name: str, *args, **kwargs) -> None:
         super().__init__(name, *args, **kwargs)
-
-        # TODO: define attributes needed for pathfinding
-        pass
+        self._world: Any = None
+        self._path: List[Any] = []
+        self._path_publisher: Optional[Publisher] = None
+        self._world_subscriber: Optional[Subscription] = None
 
     def _main(self):
-        # TODO: define pubs and subs for pathfinding
-        pass
+        self._path_publisher = self.publish("path", [])
+        self._world_subscriber = self.subscribe("world", self._world_callback, World)
