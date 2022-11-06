@@ -1,5 +1,6 @@
 from typing import Any, List, Optional
 from ..abstract_node import AbstractNode
+from abc import abstractmethod
 
 
 class ObjectDetectionNode(AbstractNode):
@@ -12,10 +13,16 @@ class ObjectDetectionNode(AbstractNode):
         self._sensor_subscriber: Optional[Subscription] = None
 
     def _main(self):
-        self._object_publisher = self.publish("objects", [])
-        self._sensor_subscriber = self.subscribe(
+        self.publish("objects", [])
+        self.subscribe(
             "sensor data", self._sensor_callback, SensorData
         )
 
-    def _sensor_callback():
+    def _sensor_callback(self, msg: SensorData):
+        self._sensor_data = msg
+        self._find_objects()
+        pass
+
+    @abstractmethod
+    def _find_objects():
         pass
