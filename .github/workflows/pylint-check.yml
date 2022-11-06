@@ -7,9 +7,7 @@ jobs:
     name: "PyLint check"
 
     runs-on: ubuntu-latest
-    container:
-      using: 'docker'
-      image: '.devcontainer/Dockerfile'
+    container: osrf/ros:humble-desktop
 
     steps:
     - uses: actions/checkout@v1
