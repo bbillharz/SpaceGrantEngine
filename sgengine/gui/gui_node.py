@@ -6,7 +6,6 @@ class GUINode(AbstractNode):
 
     def __init__(self, name: str, *args, **kwargs) -> None:
         super().__init__(name, *args, **kwargs)
-
         # TODO: define web server stuff and whatevers
         pass
 
