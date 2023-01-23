@@ -1,8 +1,8 @@
 class Pin:
     def __init__(ID, PinMode, analog_or_dig):
-        self.ID
-        self.pin_mode
-        self.analog_or_dig
+        self.ID             #int representing the pin. Intrinsic definition of the pin
+        self.pin_mode       #string
+        self.analog_or_dig  #string (either analog or dig) #TODO find better system
 
     def __str__(self):
         return f"Pin ID: {ID}"
@@ -14,10 +14,10 @@ class Pin:
     def get_ID(self):
         return ID 
     
-    def set_pin_mode(self, new_Pin_Mode):
+    def set_mode(self, new_Pin_Mode):
         self.pin_mode = new_Pin_Mode
 
-    def get_pin_mode(self):
+    def get_mode(self):
         return pin_mode
 
     def set_analog_or_dig(self, is_analog_or_dig):
