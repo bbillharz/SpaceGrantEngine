@@ -1,8 +1,8 @@
 class Pin:
     def __init__(ID, PinMode, analog_or_dig):
-        self.ID             #int representing the pin. Intrinsic definition of the pin
+        self.ID             #int representing the pin. Intrinsic definition of the pin (essentially marks its location)
         self.pin_mode       #string
-        self.analog_or_dig  #string (either analog or dig) #TODO find better system
+        self.analog_or_dig  #string (either analog or dig) #TODO find better system, int? Enumerated type?
 
     def __str__(self):
         return f"Pin ID: {ID}"

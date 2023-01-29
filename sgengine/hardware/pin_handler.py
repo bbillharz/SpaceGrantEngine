@@ -3,8 +3,12 @@
    Each pin has a simple string name that can be defined by the user, so it's easier to keep track of each pin'''
 
 class Pin_handler:
-    def __init__(pin_dictionary):
-        self.pin_dict = pin_dictionary  #maps the name of a pin to the pin data itself {string:Pin}
+    def __init__(pin_list):
+        #generate the initial dictionary with generic pin names
+        self.pin_dict = {}  #maps the name of a pin to the pin data itself {string:Pin}
+        for i in range(1, len(pin_list) + 1):
+            pin_dict["Pin" + i] = pin_list[i - 1]
+            
         self.pin_groups = {}            #maps the name of a pin group to a list of pin names in that group {string:string[]}
 
     #Add a pin to the pin dictionary, takes the pin_name (string), and the pin (Pin)
