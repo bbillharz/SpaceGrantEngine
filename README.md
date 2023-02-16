@@ -63,3 +63,39 @@ testing and development phase.
 `git push --set-upstream origin {branchname}` Pushes changes to the given branchname remotely, if the branch was created locally
 
 `git reset {--hard}` Resets back to the latest pushed changes in the remote repository (Github), DO NOT use if you have uncommited work.
+
+
+## Building and Sourcing Package
+
+`make`
+
+`source install/setup.bash`
+
+Then you can call anything defined in the package
+
+`ros2 run sgengine test`
+
+## Creating a new node
+
+In the "setup.py" file at the bottom within the "setup" function there is an argument called entry_points. 
+
+Inside of entry_points there is a dictionary with a key entry called console_scripts. 
+
+Add an entry to console_scripts for each node you want to add. This allows you to directly call the node 
+from the CLI or via a launch file. 
+
+
+## Running the OAK-D S2 camera
+
+Ensure the camera is plugged in
+
+Navigate to the depthai-ws directory
+
+If there is no dpethai-ros folder in src, then run `git submodule init`, and then `git submodule clone` (or equivalent command)
+
+Execute the `./install_depthai_ros.sh` script
+
+Whenever you open a new terminal make sure to source the setup.bash file
+`source depthai-ws/install/setup.bash`
+
+Execute: `ros2 launch depthai_examples stereo_intertial_node.launch.py extended:=True monoResolution:=400p`
