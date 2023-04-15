@@ -1,25 +1,19 @@
 from setuptools import setup
+from setuptools.command.easy_install import EasyInstallDeprecationWarning
+from setuptools._deprecation_warning import SetuptoolsDeprecationWarning
 import os
 from glob import glob
+import warnings
+warnings.filterwarnings("ignore", category=EasyInstallDeprecationWarning)
+warnings.filterwarnings("ignore", category=SetuptoolsDeprecationWarning)
 
 
 package_name = "sgengine"
 
-package_dirs = [package_name]
-for root, dirs, files in os.walk(package_name):
-    for directory in dirs:
-        if directory == "__pycache__":
-            continue
-        package_dirs.append(os.path.join(root, directory))
-package_dirs = [pack.replace("//", ".") for pack in package_dirs if "__pycache__ not in pack"]
-package_dirs = [pack.replace("/", ".") for pack in package_dirs if "__pycache__ not in pack"]
-package_dirs = [pack.replace("\\", ".") for pack in package_dirs if "__pycache__ not in pack"]
-packages = [*package_dirs]
-
 setup(
     name=package_name,
     version="0.0.1",
-    packages=packages,
+    packages=[package_name],
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
@@ -35,8 +29,11 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "test = sgengine.test_node:main",
-            "gui  = sgengine.gui.gui_node:main"
+            "test            = sgengine.test_node:main",
+            "gui             = sgengine.gui.gui_node:main",
+            "pico            = sgengine.hardware.pico.pico_node:main",
+            "steamcontroller = sgengine.hardware.controller.steamcontroller_node:main",
+            "odometry       = sgengine.odometry.odometry_node:main",     
         ],
     },
 )
