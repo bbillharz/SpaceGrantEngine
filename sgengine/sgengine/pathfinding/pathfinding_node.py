@@ -3,6 +3,9 @@ from rclpy.node import Node
 import numpy as np
 import cv2
 from cv_bridge import CvBridge
+from sgengine_messages.msg import TwoFloat
+from sensor_msgs.msg import Image
+import rclpy
 
 def detectHeading(depthMap):
 
