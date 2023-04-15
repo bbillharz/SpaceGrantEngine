@@ -108,9 +108,18 @@ class PathfindingNode(Node):
             normHeading = float(avgHeading) / float(depthMapCv.shape[1])
             normHeading = normHeading * 2.0 - 1.0 # [-1, 1]
 
+            # Angular quantization
+            thresh = 0.5
+            if normHeading < -thresh:
+                normHeading = -1
+            elif normHeading > thresh:
+                normHeading = 1
+            else:
+                normHeading = 0
+
             moveCmd = TwoFloat()
             moveCmd.first = normHeading # angular
-            moveCmd.second = 1 - normHeading # linear
+            moveCmd.second = 1 - abs(normHeading) # linear
             self._publisher.publish(moveCmd)
 
         self._subscription = self.create_subscription(
