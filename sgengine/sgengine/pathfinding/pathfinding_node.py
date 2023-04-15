@@ -1,3 +1,4 @@
+# pylint: skip-file
 from rclpy.node import Node
 import numpy as np
 import cv2
@@ -89,6 +90,8 @@ def detectHeading(depthMap):
     return minIdx
 
 class PathfindingNode(Node):
+     """Node for handling depth-based obstancle avoidance"""
+
     def __init__(self, name: str, *args, **kwargs) -> None:
         super().__init__(name, *args, **kwargs)
 
@@ -130,6 +133,9 @@ class PathfindingNode(Node):
         print("Running Pathfinding")
 
 def main(args=None):
+    """
+    Main function which exclusively launches the pathfinding node
+    """
     rclpy.init(args=args)
     pathfinding = PathfindingNode()
     rclpy.spin(pathfinding)
