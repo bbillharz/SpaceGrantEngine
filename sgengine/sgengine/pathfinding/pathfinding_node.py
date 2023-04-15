@@ -93,7 +93,7 @@ def detectHeading(depthMap):
     return minIdx
 
 class PathfindingNode(Node):
-     """Node for handling depth-based obstancle avoidance"""
+    """Node for handling depth-based obstancle avoidance"""
 
     def __init__(self, name: str, *args, **kwargs) -> None:
         super().__init__(name, *args, **kwargs)
