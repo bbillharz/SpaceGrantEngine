@@ -1,17 +1,13 @@
 FROM osrf/ros:humble-desktop
+ENV ROS_DISTRO=humble
 
-# Update repositories
-RUN apt-get update && apt-get upgrade -y
-
-# Python setup:
-RUN apt-get install python3-pip -y
-
-# Install extra tools:
-RUN apt-get install nano wget curl neofetch -y
+# Install tools
+RUN apt update \
+    && apt upgrade -y
+RUN apt install -y sudo htop net-tools wget curl git gcc g++ make perl python3 python3-pip
 
 # Add ros user (with sudo)
-RUN adduser --disabled-password --gecos '' ros
-RUN adduser ros sudo
+RUN adduser --disabled-password --gecos '' ros && adduser ros sudo
 
 # Ensure sudo group users are not 
 # asked for a password when using 
@@ -20,16 +16,15 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Switch to user ros
 USER ros
+WORKDIR /home/ros
 
-# Add python alias
-RUN echo 'alias python="python3"' >> ~/.bashrc
+# Add source ros2 to .bashrc
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 
-# source ros2
-RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+COPY --chown=ros:ros ../extern ./extern
+COPY --chown=ros:ros ../scripts/install_deps.py ./
+RUN ROS_DISTRO=$ROS_DISTRO python3 ./install_deps.py
 
-# Install python packages from requirements files
-COPY ../requirements-ci.txt /home/ros/
-RUN pip3 install -r /home/ros/requirements-ci.txt
-COPY ../requirements.txt /home/ros/
-RUN pip3 install -r /home/ros/requirements.txt
-
+USER root
+RUN rm -rf ./extern && rm -rf ./install_deps.py
+USER ros

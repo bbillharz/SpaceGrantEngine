@@ -1,0 +1,35 @@
+name: CI Check
+
+on: [push]
+jobs:
+  ci_check:
+    name: "CI Check"
+
+    runs-on: ubuntu-latest
+    container: osrf/ros:humble-desktop
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Git Submodule Update
+      run: |
+        git config --global safe.directory '*'
+        git pull --recurse-submodules
+        git submodule update --remote --recursive
+    - name: Install dependencies
+      run: |
+        ./scripts/install_deps.py
+    - name: Build
+      shell: bash
+      run: |
+        source /opt/ros/humble/setup.bash
+        make
+
+    - name: Check CI
+      shell: bash
+      run: |
+        source /opt/ros/humble/setup.bash
+        source ./install/setup.bash
+        make ci
