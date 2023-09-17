@@ -1,15 +1,15 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import subprocess
 import os
 
 def install_pip_packages(packages):
-    if type(packages) != list:
+    if not isinstance(packages, list):
         packages = [packages]
     subprocess.check_call(["sudo", "pip3", "install"] + packages + ["--upgrade"])
 
 def install_apt_packages(packages):
-    if type(packages) != list:
+    if not isinstance(packages, list):
         packages = [packages]
     subprocess.check_call(["sudo", "apt", "install", "-y"] + packages)
 
@@ -38,15 +38,19 @@ subprocess.check_call(["sudo", "wget", "https://bootstrap.pypa.io/get-pip.py", "
 subprocess.check_call(["sudo", "python3", "/root/get-pip.py"])
 
 pip_packages = [
-    "pylint",
-    "flake8",
     "black",
+    "isort",
+    "ruff",
+
+    "pyserial",
     "numpy",
     "scipy",
     "depthai",
     "opencv-contrib-python==4.8.0.74",
+    "oakutils",
     "./extern/openVO",
-    "./extern/steamcontroller",
-    "./extern/oakutils"
+    "./extern/steamcontroller"
 ]
 install_pip_packages(pip_packages)
+
+subprocess.run(["sudo", "pip3", "install", "RPi.GPIO", "--upgrade"])

@@ -3,6 +3,14 @@
 
 See [ROS Humble](https://docs.ros.org/en/humble/index.html) documentation for details on how to use ros2.  
 
+## Submodules
+
+This engine uses external dependencies that are located in the `extern` directory.
+
+To directly clone the repository with these submodules add the `--recursive` flag to your `git clone` command.
+
+To clone the submodules after cloning the engine, run `git submodule update --init --recursive`
+
 ## Style Guide
 Python code should follow snake case, with proper public/private seperation in class development.
 Public/private in Python is done with an underscore at the front of an attribute. For example,
@@ -78,14 +86,6 @@ testing and development phase.
 Then you can call anything defined in the package.
 
 For example: `ros2 run sgengine pico`  
-
-## Submodules
-
-This engine uses external dependencies that are located in the `extern` directory.
-
-To directly clone the repository with these submodules add the `--recursive` flag to your `git clone` command.
-
-To clone the submodules after cloning the engine, run `git submodule update --init --recursive`
 
 ## Launching the code automatically
 

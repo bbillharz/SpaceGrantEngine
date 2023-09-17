@@ -1,13 +1,15 @@
 import sys
 import time
 
+import serial
+
 try:
-    import serial
     from RPi import GPIO
 
     GPIO.setmode(GPIO.BCM)
-except ModuleNotFoundError:
-    print("WARNING: Could not load serial or RPi library, commands will not be sent")
+except RuntimeError as e:
+    print(f"WARNING: Could not load RPi library with error {e}")
+    print("Commands will not be sent!")
 
 
 class PicoComms:
