@@ -5,5 +5,10 @@
     },
     "black-formatter.args": ["./sgengine/sgengine"],
     "pylint.args": ["./sgengine/sgengine", "--rcfile=.pylint"],
-    "flake8.args": ["./sgengine/sgengine", "--config", ".flake8"],
+    "flake8.args": [
+      "./sgengine/sgengine",
+      "--config",
+      ".flake8"
+    ],
+    "cmake.configureOnOpen": false,
 }

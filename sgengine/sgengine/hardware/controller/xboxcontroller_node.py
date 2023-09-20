@@ -1,5 +1,7 @@
 # thanks stack overflow : https://stackoverflow.com/questions/46506850/how-can-i-get-input-from-an-xbox-one-controller-in-python
 
+# fix names n such
+
 import sys
 import time
 import subprocess
@@ -22,12 +24,12 @@ class XboxControllerNode(Node):
         self._launched_auton = False
 
         # controller setup
-        self.LeftJoystickY = 0
-        self.LeftJoystickX = 0
-        self.A = 0
-        self.X = 0
-        self.Y = 0
-        self.B = 0
+        self.left_joystick_y = 0
+        self.left_joystick_x = 0
+        self.a_button = 0
+        self.x_button = 0
+        self.y_button = 0
+        self.b_button = 0
 
         self._monitor_thread = threading.Thread(target=self._monitor_controller, args=())
         self._monitor_thread.daemon = True

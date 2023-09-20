@@ -1,6 +1,6 @@
-float64 first
-float64 second
-float64 A
-float64 B
-float64 X
-float64 Y
+float64 left_joystick_y
+float64 left_joystick_x
+float64 a_button
+float64 b_button
+float64 x_button
+float64 y_button
