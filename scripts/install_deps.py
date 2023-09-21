@@ -2,11 +2,7 @@
 
 import subprocess
 import os
-
-def install_pip_packages(packages):
-    if not isinstance(packages, list):
-        packages = [packages]
-    subprocess.check_call(["sudo", "pip3", "install"] + packages + ["--upgrade"])
+import sys
 
 def install_apt_packages(packages):
     if not isinstance(packages, list):
@@ -21,36 +17,48 @@ if ros_distro is None:
 
 subprocess.check_call(["sudo", "apt", "update"])
 
-misic_tools = [
-    "nano",
-    "wget",
-    "curl"
-]
-install_apt_packages(misic_tools)
+# Install misic tools
+install_apt_packages(["nano", "wget", "curl"])
 
-engine_deps = [
-    f"ros-{ros_distro}-depthai",
-    "python3-cv-bridge",
-]
-install_apt_packages(engine_deps)
+# Install deps (system)
+install_apt_packages(
+    [
+        f"ros-{ros_distro}-depthai",
+        "python3-cv-bridge",
+        "python3-venv"
+    ]
+)
 
-subprocess.check_call(["sudo", "wget", "https://bootstrap.pypa.io/get-pip.py", "-P", "/root/"])
-subprocess.check_call(["sudo", "python3", "/root/get-pip.py"])
+if "--apt_only" in sys.argv:
+    exit()
 
-pip_packages = [
-    "black",
-    "isort",
-    "ruff",
+subprocess.check_call(["python3", "-m", "venv", "venv"])
 
-    "pyserial",
-    "numpy",
-    "scipy",
-    "depthai",
-    "opencv-contrib-python==4.8.0.74",
-    "oakutils",
-    "./extern/openVO",
-    "./extern/steamcontroller"
-]
-install_pip_packages(pip_packages)
+def install_pip_packages(packages, check_return_code=True):
+    if not isinstance(packages, list):
+        packages = [packages]
+    command = ["./venv/bin/pip3", "install"] + packages + ["--upgrade"]
+    if check_return_code:
+        subprocess.check_call(command)
+    else:
+        subprocess.run(command)
 
-subprocess.run(["sudo", "pip3", "install", "RPi.GPIO", "--upgrade"])
+# Upgrade pip for compatibility with newer packages
+install_pip_packages("pip")
+
+install_pip_packages(
+    [
+        "black",
+        "isort",
+        "ruff",
+        "pyserial",
+        "numpy",
+        "scipy",
+        "depthai",
+        "opencv-contrib-python==4.8.0.74",
+        "oakutils",
+    ]
+)
+install_pip_packages(["./extern/openVO", "./extern/steamcontroller"], check_return_code=False)
+
+install_pip_packages("RPi.GPIO", check_return_code=False)

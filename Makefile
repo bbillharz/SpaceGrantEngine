@@ -1,7 +1,7 @@
 .PHONY: engine all check clean test ci help
 
 all:
-	colcon build --symlink-install --packages-skip python-steamcontroller
+	bash -c "source ./venv/bin/activate && colcon build --symlink-install --packages-skip python-steamcontroller"
 
 clean:
 	sudo rm -rf ./install
@@ -11,10 +11,10 @@ clean:
 check: ci test
 
 test:
-	colcon test --event-handlers console_direct+ --packages-skip python-steamcontroller
+	bash -c "source ./venv/bin/activate && colcon test --event-handlers console_direct+ --packages-skip python-steamcontroller"
 
 ci:
-	bash -c "source ./install/setup.bash && python3 -m black ./sgengine/sgengine && python3 -m isort ./sgengine/sgengine && python3 -m ruff --fix ./sgengine/sgengine"
+	bash -c "source ./venv/bin/activate && source ./install/setup.bash && python3 -m black ./sgengine/sgengine && python3 -m isort ./sgengine/sgengine && python3 -m ruff --fix ./sgengine/sgengine"
 	@echo "DONE - CI PASSED"
 
 help:

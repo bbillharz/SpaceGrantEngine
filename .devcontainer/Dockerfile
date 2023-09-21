@@ -2,8 +2,7 @@ FROM osrf/ros:humble-desktop
 ENV ROS_DISTRO=humble
 
 # Install tools
-RUN apt update \
-    && apt upgrade -y
+RUN apt update && apt upgrade -y
 RUN apt install -y sudo htop net-tools wget curl git gcc g++ make perl python3 python3-pip
 
 # Add ros user (with sudo)
@@ -23,8 +22,4 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 
 COPY --chown=ros:ros ../extern ./extern
 COPY --chown=ros:ros ../scripts/install_deps.py ./
-RUN ROS_DISTRO=$ROS_DISTRO python3 ./install_deps.py
-
-USER root
-RUN rm -rf ./extern && rm -rf ./install_deps.py
-USER ros
+RUN ROS_DISTRO=$ROS_DISTRO python3 ./install_deps.py --apt_only
