@@ -1,25 +1,25 @@
-.PHONY: engine all check clean test ci help
+.PHONY: all check clean test fmt help
 
 all:
-	bash -c "source ./venv/bin/activate && colcon build --symlink-install --packages-skip python-steamcontroller"
+	bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
 clean:
-	sudo rm -rf ./install
-	sudo rm -rf ./build
-	sudo rm -rf ./log
+	rm -rf ./install
+	rm -rf ./build
+	rm -rf ./log
 
-check: ci test
+check: fmt test
 
 test:
-	bash -c "source ./venv/bin/activate && colcon test --event-handlers console_direct+ --packages-skip python-steamcontroller"
+	bash -c "source /opt/ros/humble/setup.bash && colcon test --event-handlers console_direct+"
 
-ci:
-	bash -c "source ./venv/bin/activate && source ./install/setup.bash && python3 -m black ./sgengine/sgengine && python3 -m isort ./sgengine/sgengine && python3 -m ruff --fix ./sgengine/sgengine"
+fmt:
+	bash -c "source /opt/ros/humble/setup.bash && source ./install/setup.bash && python3 -m black ./sgengine/sgengine && python3 -m isort ./sgengine/sgengine && python3 -m ruff --fix ./sgengine/sgengine"
 	@echo "DONE - CI PASSED"
 
 help:
 	@echo "all - Builds all ros packages (Default)"
 	@echo "clean - Clears the workspace (build, install, and log dirs)"
-	@echo "check - Runs test & ci"
-	@echo "test_engine - Runs the ROS2 test suite on sgengine packages"
-	@echo "ci - Runs the continous integration locally, outputs errors"
+	@echo "check - Runs test & fmt"
+	@echo "test - Runs the ROS2 test suite on packages"
+	@echo "fmt - Runs formatting corrections & tests, outputs problems to fix"

@@ -32,19 +32,14 @@ install_apt_packages(
 if "--apt_only" in sys.argv:
     exit()
 
-subprocess.check_call(["python3", "-m", "venv", "venv"])
-
 def install_pip_packages(packages, check_return_code=True):
     if not isinstance(packages, list):
         packages = [packages]
-    command = ["./venv/bin/pip3", "install"] + packages + ["--upgrade"]
+    command = ["pip3", "install"] + packages
     if check_return_code:
         subprocess.check_call(command)
     else:
         subprocess.run(command)
-
-# Upgrade pip for compatibility with newer packages
-install_pip_packages("pip")
 
 install_pip_packages(
     [
@@ -52,7 +47,7 @@ install_pip_packages(
         "isort",
         "ruff",
         "pyserial",
-        "numpy",
+        "numpy<1.25.0",
         "scipy",
         "depthai",
         "opencv-contrib-python==4.8.0.74",

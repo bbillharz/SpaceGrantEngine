@@ -30,7 +30,6 @@ setup(
     entry_points={
         "console_scripts": [
             "pico            = sgengine.hardware.pico.pico_node:main",
-            "steamcontroller = sgengine.hardware.controller.steamcontroller_node:main",
             "odometry        = sgengine.odometry.odometry_node:main",
             "pathfinding     = sgengine.pathfinding.pathfinding_node:main",
         ],

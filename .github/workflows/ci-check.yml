@@ -27,9 +27,16 @@ jobs:
         source /opt/ros/humble/setup.bash
         make
 
-    - name: Check CI
+    - name: Check Formatting
       shell: bash
       run: |
         source /opt/ros/humble/setup.bash
         source ./install/setup.bash
-        make ci
+        make fmt
+    
+    - name: Run Tests
+      shell: bash
+      run: |
+        source /opt/ros/humble/setup.bash
+        source ./install/setup.bash
+        make test
