@@ -25,7 +25,7 @@ install_apt_packages(
     [
         f"ros-{ros_distro}-depthai",
         "python3-cv-bridge",
-        "python3-venv"
+        "python3-pip"
     ]
 )
 
