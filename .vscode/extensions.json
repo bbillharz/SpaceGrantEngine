@@ -1,9 +1,14 @@
 {
 	"recommendations": [
 		"ms-python.python",
+		"charliermarsh.ruff",
 		"ms-vscode.cpptools",
 		"twxs.cmake",
 		"ms-vscode.makefile-tools",
-		"yzhang.markdown-all-in-one"
+		"yzhang.markdown-all-in-one",
+		"tamasfe.even-better-toml",
+		"GitHub.vscode-github-actions",
+		"ms-python.black-formatter",
+		"ms-python.isort"
 	]
 }
