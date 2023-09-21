@@ -59,6 +59,6 @@ install_pip_packages(
         "oakutils",
     ]
 )
-install_pip_packages(["./extern/openVO", "./extern/steamcontroller"], check_return_code=False)
+install_pip_packages("./extern/openVO", check_return_code=False)
 
 install_pip_packages("RPi.GPIO", check_return_code=False)
