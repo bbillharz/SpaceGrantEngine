@@ -41,6 +41,8 @@ def install_pip_packages(packages, check_return_code=True):
     else:
         subprocess.run(command)
 
+subprocess.check_call(["pip3", "install", "pip", "--upgrade"])
+
 install_pip_packages(
     [
         "black",
@@ -54,6 +56,6 @@ install_pip_packages(
         "oakutils",
     ]
 )
-install_pip_packages("./extern/openVO", check_return_code=False)
+install_pip_packages(["./extern/openVO", "./extern/linux-js"], check_return_code=False)
 
 install_pip_packages("RPi.GPIO", check_return_code=False)

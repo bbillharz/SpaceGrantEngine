@@ -1,86 +1,73 @@
 # thanks stack overflow : https://stackoverflow.com/questions/46506850/how-can-i-get-input-from-an-xbox-one-controller-in-python
 
-# fix names n such
-
-import sys
-import time
-import subprocess
-import rclpy
 import math
 import threading
-from inputs import get_gamepad
+
+import rclpy
+from linux_js import XBOX_CONSTANTS, AxisEvent, Joystick
 from rclpy.node import Node
-from sgengine_messages.msg import XboxInput
+
+from sgengine_messages.msg import TwoFloat
+
 
 class XboxControllerNode(Node):
-    '''Node for handling input from an Xbox Controller'''
+    """Node for handling input from an Xbox Controller"""
 
     MAX_JOY_VAL = math.pow(2, 15)
 
     def __init__(self) -> None:
         # ros stuff
         Node.__init__(self, "xboxcontroller")
-        self._publisher = self.create_publisher(XboxInput, "xbox/input", 10)
+        self._publisher = self.create_publisher(TwoFloat, "pico/move_command", 10)
         self._launched_auton = False
 
-        # controller setup
-        self.left_joystick_y = 0
-        self.left_joystick_x = 0
-        self.a_button = 0
-        self.x_button = 0
-        self.y_button = 0
-        self.b_button = 0
+        self._publish_timer = self.create_timer(1.0 / 60.0, self.publish_inputs)
 
-        self._monitor_thread = threading.Thread(target=self._monitor_controller, args=())
+        # controller setup
+        self._target_linear = 0.0
+        self._target_angular = 0.0
+
+        self._monitor_thread = threading.Thread(
+            target=self._monitor_controller, args=()
+        )
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
+        print("Running the xboxcontroller node")
 
-    def read(self): # publish the buttons/triggers that you care about in this methode      
-        msg = XboxInput()
-        msg.first = self.LeftJoystickX
-        msg.second = self.LeftJoystickY
-        msg.A = self.A
-        msg.B = self.B
-        msg.X = self.X
-        msg.Y = self.Y
-        print("Joystick X: " + self.LeftJoystickX)
-        print("Joystick Y: " + self.LeftJoystickY)
+    def publish_inputs(
+        self,
+    ):  # publish the buttons/triggers that you care about in this methode
+        msg = TwoFloat()
+        msg.first = self._target_angular
+        msg.second = self._target_linear
         self._publisher.publish(msg)
 
-
     def _monitor_controller(self):
+        js = Joystick(0)
         while True:
-            events = get_gamepad()
-            for event in events:
-                if event.code == 'ABS_Y':
-                    self.LeftJoystickY = event.state / XboxControllerNode.MAX_JOY_VAL # normalize between -1 and 1
-                elif event.code == 'ABS_X':
-                    self.LeftJoystickX = event.state / XboxControllerNode.MAX_JOY_VAL # normalize between -1 and 1
-                elif event.code == 'BTN_SOUTH':
-                    self.A = event.state
-                elif event.code == 'BTN_NORTH':
-                    self.Y = event.state #previously switched with X
-                elif event.code == 'BTN_WEST':
-                    self.X = event.state #previously switched with Y
-                elif event.code == 'BTN_EAST':
-                    self.B = event.state
+            event = js.poll()
+            if isinstance(event, AxisEvent):
+                if event.id == XBOX_CONSTANTS.L_STICK_X:
+                    self._target_angular = math.min(
+                        math.max(event.value / XBOX_CONSTANTS.MAX_AXIS_VALUE, -1.0), 1.0
+                    )
+                elif event.id == XBOX_CONSTANTS.L_STICK_Y:
+                    self._target_linear = math.min(
+                        math.max(event.value / XBOX_CONSTANTS.MAX_AXIS_VALUE, -1.0), 1.0
+                    )
+
 
 def main(args=None):
     """
     Main function which exclusively launches the XboxController node
     """
-    # If the inputs package not found, exit
-    if "inputs" not in sys.modules:
-        return
     rclpy.init(args=args)
     controller = XboxControllerNode()
     rclpy.spin(controller)
     controller.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
-    joy = XboxControllerNode()
-    while True:
-        joy.read()
