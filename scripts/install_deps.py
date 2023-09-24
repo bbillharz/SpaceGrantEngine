@@ -1,15 +1,11 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import subprocess
 import os
-
-def install_pip_packages(packages):
-    if type(packages) != list:
-        packages = [packages]
-    subprocess.check_call(["sudo", "pip3", "install"] + packages + ["--upgrade"])
+import sys
 
 def install_apt_packages(packages):
-    if type(packages) != list:
+    if not isinstance(packages, list):
         packages = [packages]
     subprocess.check_call(["sudo", "apt", "install", "-y"] + packages)
 
@@ -21,32 +17,43 @@ if ros_distro is None:
 
 subprocess.check_call(["sudo", "apt", "update"])
 
-misic_tools = [
-    "nano",
-    "wget",
-    "curl"
-]
-install_apt_packages(misic_tools)
+# Install misic tools
+install_apt_packages(["nano", "wget", "curl"])
 
-engine_deps = [
-    f"ros-{ros_distro}-depthai",
-    "python3-cv-bridge",
-]
-install_apt_packages(engine_deps)
+# Install deps (system)
+install_apt_packages(
+    [
+        f"ros-{ros_distro}-depthai",
+        "python3-cv-bridge",
+        "python3-pip"
+    ]
+)
 
-subprocess.check_call(["sudo", "wget", "https://bootstrap.pypa.io/get-pip.py", "-P", "/root/"])
-subprocess.check_call(["sudo", "python3", "/root/get-pip.py"])
+if "--apt_only" in sys.argv:
+    exit()
 
-pip_packages = [
-    "pylint",
-    "flake8",
-    "black",
-    "numpy",
-    "scipy",
-    "depthai",
-    "opencv-contrib-python==4.8.0.74",
-    "./extern/openVO",
-    "./extern/steamcontroller",
-    "./extern/oakutils"
-]
-install_pip_packages(pip_packages)
+def install_pip_packages(packages, check_return_code=True):
+    if not isinstance(packages, list):
+        packages = [packages]
+    command = ["pip3", "install"] + packages
+    if check_return_code:
+        subprocess.check_call(command)
+    else:
+        subprocess.run(command)
+
+install_pip_packages(
+    [
+        "black",
+        "isort",
+        "ruff",
+        "pyserial",
+        "numpy<1.25.0",
+        "scipy",
+        "depthai",
+        "opencv-contrib-python==4.8.0.74",
+        "oakutils",
+    ]
+)
+install_pip_packages("./extern/openVO", check_return_code=False)
+
+install_pip_packages("RPi.GPIO", check_return_code=False)

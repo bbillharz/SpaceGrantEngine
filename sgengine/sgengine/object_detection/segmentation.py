@@ -1,8 +1,8 @@
 from typing import Tuple
 
-import numpy as np
 import cv2
-from sklearn.cluster import MiniBatchKMeans, KMeans, DBSCAN
+import numpy as np
+from sklearn.cluster import DBSCAN, KMeans, MiniBatchKMeans
 
 
 def segment_image(

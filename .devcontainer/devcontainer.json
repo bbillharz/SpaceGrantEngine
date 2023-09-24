@@ -4,17 +4,22 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-azuretools.vscode-docker",
                 "ms-python.python",
+                "charliermarsh.ruff",
                 "ms-vscode.cpptools",
                 "twxs.cmake",
                 "ms-vscode.makefile-tools",
-                "yzhang.markdown-all-in-one"
+                "yzhang.markdown-all-in-one",
+                "tamasfe.even-better-toml",
+                "GitHub.vscode-github-actions",
+                "ms-python.black-formatter",
+                "ms-python.isort"
             ]
         }
     },
     // Allow USB in container
     "runArgs": ["--device-cgroup-rule", "c 189:* rmw", "-v", "/dev/bus/usb:/dev/bus/usb"],
+    "postCreateCommand": "git submodule update --init --recursive && python3 ./scripts/install_deps.py",
     
     // This will launch the container as a non-root user
     "remoteUser" : "ros"

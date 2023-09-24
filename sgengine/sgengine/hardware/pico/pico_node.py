@@ -1,10 +1,7 @@
 import rclpy
-
-
 from rclpy.node import Node
 
 from sgengine_messages.msg import TwoFloat
-from sgengine_messages.msg import XboxInput
 from .pico_comms import PicoComms
 
 
@@ -18,15 +15,8 @@ class PicoNode(Node, PicoComms):
         def move_callback(msg: TwoFloat) -> None:
             PicoComms.send_move_command(self, msg.first, msg.second)
 
-        def xbox_move_callback(msg: XboxInput) -> None:
-            PicoComms.send_move_command(self, msg.first, msg.second)
-        
         self.subscription = self.create_subscription(
             TwoFloat, "pico/move_command", move_callback, 10
-        )
-
-        self.subscription = self.create_subscripton(
-            XboxInput, "xbox/input", xbox_move_callback, 10
         )
 
         print("Running PicoNode")
