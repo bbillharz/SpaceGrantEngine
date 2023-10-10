@@ -15,7 +15,7 @@ from oakutils.point_clouds import filter_point_cloud, get_point_cloud_from_np_bu
 RGB_SIZE = (1920, 1080)
 RGB_PREVIEW_SIZE = (640, 480)
 MONO_SIZE = (640, 400)
-VOXEL_SIZE = 0.05
+VOXEL_SIZE = 0.02
 
 
 def main():
@@ -45,32 +45,29 @@ def main():
     with dai.Device(pipeline) as device:
         start_pcl(device)
 
-        pcl_q = device.getOutputQueue("pcl", 1, False)
+        pcl_q = device.getOutputQueue("pcl", 2, False)
         fps_buffer = deque(maxlen=10)
+        c_buffer = deque(maxlen=10)
+        filter_buffer = deque(maxlen=10)
         t0 = time.perf_counter()
         while True:
             pcl_data = pcl_q.get()
             pcl_np = get_nn_point_cloud_buffer(pcl_data)
-            f0 = time.perf_counter()
-            pcl = filter_point_cloud(
-                get_point_cloud_from_np_buffer(pcl_np),
-                voxel_size=VOXEL_SIZE,
-            )
-            f1 = time.perf_counter()
 
-            # do other stuff
-            # collect only points which have an y value greater than VOXEL SIZE
-            # the y value is the vertical distance from the camera
-            points = np.asarray(pcl.points)  # convert back since we filtere with open3d
-            points = points[points[:, 1] >= VOXEL_SIZE]  # should be the voxel size, I.E. greater than a single voxel
-            # these points become the new "laser scan" at our current position
+            c0 = time.perf_counter()
+            pcl = get_point_cloud_from_np_buffer(pcl_np)
+            c1 = time.perf_counter()
+            pcl = filter_point_cloud(pcl, VOXEL_SIZE, downsample_first=True)
+            c2 = time.perf_counter()
+            c_buffer.append(c1 - c0)
+            filter_buffer.append(c2 - c1)
+            print(f"Conversion took {np.mean(c_buffer):.3f}s")
+            print(f"Filtering took {np.mean(filter_buffer):.3f}s")
 
             t1 = time.perf_counter()
             fps_buffer.append(t1 - t0)
             t0 = t1
-
             print(f"FPS: {1 / np.mean(fps_buffer):.2f}")
-            print(f"Filtering took {f1 - f0:.3f}s")
 
 
 if __name__ == "__main__":
