@@ -6,12 +6,9 @@ def generate_launch_description():
         Node(
             package='sgengine',
             executable='pico',
-            name='pico'
         ),
         Node(
             package='sgengine',
-            executable='steamcontroller',
-            name='steamcontroller'
+            executable='xboxcontroller',
         )
     ])
-    

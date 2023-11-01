@@ -2,6 +2,7 @@
 
 import math
 import threading
+import time
 
 import rclpy
 from linux_js import XBOX_CONSTANTS, AxisEvent, Joystick
@@ -44,18 +45,33 @@ class XboxControllerNode(Node):
         self._publisher.publish(msg)
 
     def _monitor_controller(self):
-        js = Joystick(0)
+        js = None
         while True:
-            event = js.poll()
-            if isinstance(event, AxisEvent):
-                if event.id == XBOX_CONSTANTS.L_STICK_X:
-                    self._target_angular = math.min(
-                        math.max(event.value / XBOX_CONSTANTS.MAX_AXIS_VALUE, -1.0), 1.0
-                    )
-                elif event.id == XBOX_CONSTANTS.L_STICK_Y:
-                    self._target_linear = math.min(
-                        math.max(event.value / XBOX_CONSTANTS.MAX_AXIS_VALUE, -1.0), 1.0
-                    )
+            while True:
+                try:
+                    js = Joystick(0)
+                    break
+                except FileNotFoundError:
+                    print("Controller not connected. Retrying in 5 seconds...")
+                    time.sleep(5)
+
+            print("Controller connected!")
+
+            while True:
+                event = None
+                try:
+                    event = js.poll()
+                except OSError:
+                    break
+                if isinstance(event, AxisEvent):
+                    if event.id == XBOX_CONSTANTS.L_STICK_X:
+                        self._target_angular = min(
+                            max(event.value / XBOX_CONSTANTS.MAX_AXIS_VALUE, -1.0), 1.0
+                        )
+                    elif event.id == XBOX_CONSTANTS.L_STICK_Y:
+                        self._target_linear = min(
+                            max(event.value / XBOX_CONSTANTS.MAX_AXIS_VALUE, -1.0), 1.0
+                        )
 
 
 def main(args=None):

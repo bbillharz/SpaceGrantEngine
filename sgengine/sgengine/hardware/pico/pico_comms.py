@@ -19,6 +19,7 @@ class PicoComms:
         """Creates a cummunication line to send instructions to the pi pico.
         The interrupt pin is the pin that will be used to tell the pico that it has received an instruction
         """
+        self._no_comms = False
         if "serial" not in sys.modules:
             self._no_comms = True
             print("PicoComms running in dummy mode")
